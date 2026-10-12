@@ -1,6 +1,5 @@
 var Main;
 
-// Assuming you're using a bundler or ES module-compatible environment
 
 import Map from "https://js.arcgis.com/5.1/@arcgis/core/Map.js";
 import Graphic from "https://js.arcgis.com/5.1/@arcgis/core/Graphic.js";
@@ -54,63 +53,22 @@ Main = (function() {
             }
         }
     });
+
+    // Search widget
     const searchWidget = new Search({
-    view: view,
-    includeDefaultSources: false,
+        view: view
+    });
 
-    sources: [{
-        name: "My Locations",
+    view.ui.add(searchWidget, "top-right");
 
-        getResults: function(params) {
+    // Home button
+    const homeBtn = new Home({
+        view: view
+    });
 
-            const places = [
-                {
-                    name: "Laramie",
-                    coordinates: [-105.5800, 41.3114]
-                },
-                {
-                    name: "Cortland",
-                    coordinates: [-76.1805, 42.6012]
-                },
-                {
-                    name: "Polson",
-                    coordinates: [-114.1632, 47.6936]
-                },
-                {
-                    name: "Patchogue",
-                    coordinates: [-73.0151, 40.7657]
-                }
-            ];
+    view.ui.add(homeBtn, "top-left");
 
-            return places
-                .filter(place =>
-                    place.name.toLowerCase().includes(
-                        params.suggestTerm.toLowerCase()
-                    )
-                )
-                .map(place => ({
-                    name: place.name,
-                    feature: {
-                        geometry: {
-                            type: "point",
-                            longitude: place.coordinates[0],
-                            latitude: place.coordinates[1]
-                        }
-                    }
-                }));
-        }
-    }]
-});
-
-view.ui.add(searchWidget, "top-right");
-
-const homeBtn = new Home({
-    view: view
-});
-
-view.ui.add(homeBtn, "top-left");;
-
-    const initMap = function () {
+    const initMap = function() {
 
         const graphicsLayer = new GraphicsLayer();
         map.add(graphicsLayer);
@@ -172,7 +130,6 @@ view.ui.add(homeBtn, "top-left");;
         });
 
     });
-    
 
     return {};
 
